@@ -8,6 +8,7 @@ public class Utility {
 
     // set Utility Driver
     public static void setUtilityDriver(){
+
         driver = BasePage.driver;
     }
 }
