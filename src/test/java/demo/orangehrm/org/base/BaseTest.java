@@ -64,7 +64,7 @@ public class BaseTest {
 
     }
 
-    // its run after excution of any testcase
+    // its run after execution of any testcase
     @AfterMethod
     public void driverClosed () {
         driver.quit();

@@ -37,3 +37,5 @@ public class AdminTest extends BaseTest {
         extentTest.log(Status.PASS,"User Management Title is: " + userManagementTitle);
     }
 }
+
+
