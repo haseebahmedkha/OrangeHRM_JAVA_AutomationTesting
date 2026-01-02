@@ -9,30 +9,42 @@ import org.testng.annotations.Test;
 
 public class SideBarTest extends BaseTest {
 
-    // test a sidebar test case
+    // Test Case: Verify Sidebar toggle functionality (Right ↔ Left)
     @Test
     public void testSideBar(){
+        // Step 0: Initialize ExtentReports test
         extentTest = extentReports.createTest("Test SideBar For Moving Right to Left");
+
+        // Step 1: Login to the application
         loginPage.delay(10000);
-        loginPage.setUserName("Admin");
-        extentTest.log(Status.INFO,"Enter Valid User Name");
-        loginPage.setUserPassword("admin123");
-        extentTest.log(Status.INFO,"Enter Valid User Password");
+        loginPage.enterUsername("Admin");
+        extentTest.log(Status.INFO,"Entered valid username: Admin");
+        loginPage.enterPassword("admin123");
+        extentTest.log(Status.INFO,"Entered valid password");
         loginPage.clickLoginButton();
-        extentTest.log(Status.INFO,"Enter Login Button");
+        extentTest.log(Status.INFO,"Clicked Login Button");
         loginPage.delay(6000);
+
+        // Step 2: Initialize HomePage and Sidebar objects
         HomePage homePage = new HomePage();
         SideBar sideBar = new SideBar();
         loginPage.delay(6000);
-        sideBar.clickOnSideBar();
-        extentTest.log(Status.INFO,"Click SideBar to Move Left");
-        loginPage.delay(6000);
-        sideBar.clickOnSideBar();
-        extentTest.log(Status.INFO,"Click SideBar to Move Right");
-        extentTest.log(Status.PASS,"SideBar Moving Right To Left and Left to Right Successful");
-        LogoutPage logoutPage = new LogoutPage();
-        logoutPage.clickOnDropDown();
-        logoutPage.clickOnLogout();
 
+        // Step 3: Toggle Sidebar to move left
+        sideBar.clickSidebarToggle();
+        extentTest.log(Status.INFO,"Clicked Sidebar to move Left");
+        loginPage.delay(6000);
+
+        // Step 4: Toggle Sidebar to move right
+        sideBar.clickSidebarToggle();
+        extentTest.log(Status.INFO,"Clicked Sidebar to move Right");
+
+        // Step 5: Log test result in ExtentReports
+        extentTest.log(Status.PASS,"Sidebar moved Right to Left and Left to Right successfully");
+
+        // Step 6: Logout after test completion
+        LogoutPage logoutPage = new LogoutPage();
+        logoutPage.clickUserDropdown();
+        logoutPage.clickLogout();
     }
 }

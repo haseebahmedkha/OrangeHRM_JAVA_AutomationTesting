@@ -6,97 +6,134 @@ import demo.orangehrm.org.base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
-// its test all the testSuite
+/**
+ * LoginTest Class
+ * ------------------------
+ * - Contains all login test cases for OrangeHRM
+ * - Covers positive and negative scenarios:
+ *   1. Invalid credentials
+ *   2. Missing username
+ *   3. Missing password
+ *   4. Missing both username and password
+ *   5. Valid credentials
+ * - Integrates ExtentReports for detailed reporting
+ */
 @Test
 public class LoginTest extends BaseTest {
 
-
-    // its test a particular login test with InValid Credentials
+    /**
+     * Test login with invalid username and password
+     */
     @Test
-    public void testInValidLoginCredential(){
-        extentTest = extentReports.createTest("login test with Invalid Credentials");
+    public void testInValidLoginCredential() {
+        extentTest = extentReports.createTest("Login Test with Invalid Credentials");
+
+        // Expected error message
         String expectedResult = "Invalid credentials";
-        loginPage.delay(15000);
-        extentTest.log(Status.INFO,"Invalid User Name Entered");
-        loginPage.setUserName("Adminjd");
-        extentTest.log(Status.INFO,"Invalid User Password Entered");
-        loginPage.setUserPassword("1234err");
-        extentTest.log(Status.INFO,"Click on Login Button");
+
+        loginPage.delay(15000); // Wait for page load (replace with explicit wait in production)
+        extentTest.log(Status.INFO, "Entering invalid username");
+        loginPage.enterUsername("Adminjd");
+
+        extentTest.log(Status.INFO, "Entering invalid password");
+        loginPage.enterPassword("1234err");
+
+        extentTest.log(Status.INFO, "Clicking Login Button");
         loginPage.delay(4000);
         loginPage.clickLoginButton();
         loginPage.delay(8000);
-        extentTest.log(Status.PASS,"login Not Successfully");
-        String actualResult = loginPage.getErrorMessage();
-        Assert.assertEquals(actualResult,expectedResult,"the Actual and Expected Do Not Matched");
+
+        extentTest.log(Status.PASS, "Login failed as expected");
+        String actualResult = loginPage.getLoginErrorMessage();
+        Assert.assertEquals(actualResult, expectedResult, "Actual and expected results do not match");
     }
 
-    // its test a particular login test without enter Username
+    /**
+     * Test login without entering username
+     */
     @Test
-    public void testLoginWithOutEnterUserName(){
-        extentTest = extentReports.createTest("login test without username Credentials");
+    public void testLoginWithOutEnterUserName() {
+        extentTest = extentReports.createTest("Login Test without Username");
+
         String expectedResult = "Required";
+
+        loginPage.delay(10000); // Wait for page load
+        extentTest.log(Status.INFO, "Entering password only");
+        loginPage.enterPassword("admin123");
+
+        extentTest.log(Status.INFO, "Clicking Login Button");
+        loginPage.clickLoginButton();
+        loginPage.delay(6000);
+
+        String actualResult = loginPage.getRequiredFieldMessage();
+        extentTest.log(Status.PASS, "Username required error displayed successfully");
+        Assert.assertEquals(actualResult, expectedResult, "Actual and expected results do not match");
+    }
+
+    /**
+     * Test login without entering password
+     */
+    @Test
+    public void testLoginWithOutEnterUserPassword() {
+        extentTest = extentReports.createTest("Login Test without Password");
+
+        String expectedResult = "Required";
+
         loginPage.delay(10000);
-        extentTest.log(Status.INFO,"Invalid User Password Entered");
-        loginPage.setUserPassword("admin123");
-        extentTest.log(Status.INFO,"Click on Login Button");
-        loginPage.clickLoginButton();
-        extentTest.log(Status.INFO,"login Not Successfully");
-        loginPage.delay(6000);
-        String actualResult = loginPage.showRequired();
-        extentTest.log(Status.PASS,"Show user name Required Successfully");
-        Assert.assertEquals(actualResult,expectedResult,"Actual And Expected Do not Matched");
+        extentTest.log(Status.INFO, "Entering username only");
+        loginPage.enterUsername("Admin");
 
+        extentTest.log(Status.INFO, "Clicking Login Button");
+        loginPage.clickLoginButton();
+        loginPage.delay(6000);
+
+        String actualResult = loginPage.getRequiredFieldMessage();
+        extentTest.log(Status.PASS, "Password required error displayed successfully");
+        Assert.assertEquals(actualResult, expectedResult, "Actual and expected results do not match");
     }
 
-    // its test a particular login test without Entering user password
+    /**
+     * Test login without entering both username and password
+     */
     @Test
-    public void testLoginWithOutEnterUserPassword(){
-        extentTest = extentReports.createTest("login test without Password Credentials");
+    public void testLoginWithOutEnterUserPasswordAndUserPassword() {
+        extentTest = extentReports.createTest("Login Test without Username and Password");
+
         String expectedResult = "Required";
-        loginPage.delay(10000);
-        loginPage.setUserName("Admin");
-        extentTest.log(Status.INFO,"Valid User Name Entered");
+
+        extentTest.log(Status.INFO, "Clicking Login Button without entering credentials");
         loginPage.clickLoginButton();
-        extentTest.log(Status.INFO,"login Not Successfully");
         loginPage.delay(6000);
-        String actualResult = loginPage.showRequired();
-        extentTest.log(Status.PASS,"Show user Password Required Successfully");
-        Assert.assertEquals(actualResult,expectedResult,"Actual And Expected Do not Matched");
+
+        String actualResult = loginPage.getRequiredFieldMessage();
+        extentTest.log(Status.PASS, "Username and password required error displayed successfully");
+        Assert.assertEquals(actualResult, expectedResult, "Actual and expected results do not match");
     }
 
-    // its test a particular login test without Entering user name and password
-    @Test
-    public void testLoginWithOutEnterUserPasswordAndUserPassword(){
-        extentTest = extentReports.createTest("login test without Username and Password Credentials");
-        String expectedResult = "Required";
-        loginPage.clickLoginButton();
-        extentTest.log(Status.INFO,"login Not Successfully");
-        loginPage.delay(6000);
-        String actualResult = loginPage.showRequired();
-        extentTest.log(Status.PASS,"Show username and  Password Required Successfully");
-        Assert.assertEquals(actualResult,expectedResult,"Actual And Expected Do not Matched");
-
-    }
-
-    // its test a particular login test with Valid Credentials
+    /**
+     * Test login with valid username and password
+     */
     @Test
     public void testLoginWithValidCredential() {
-        extentTest = extentReports.createTest("login test correct Username and Password Credentials");
-        String expectedResult = "Dashboard";
-        loginPage.delay(15000);
-        loginPage.setUserName("Admin");
-        extentTest.log(Status.INFO,"Valid User Name Entered");
-        loginPage.setUserPassword("admin123");
-        extentTest.log(Status.INFO,"Valid User Password Entered");
-        loginPage.clickLoginButton();
-        extentTest.log(Status.INFO,"Clicked Login Button");
-        loginPage.delay(6000);
-        HomePage homePage = new HomePage();
-        String actualResult = homePage.returnHeaderText();
-        extentTest.log(Status.PASS,"Login Successfully");
-        Assert.assertEquals(actualResult,expectedResult,"Actual And Expected Do not Matched");
-    }
+        extentTest = extentReports.createTest("Login Test with Valid Credentials");
 
+        String expectedResult = "Dashboard";
+
+        loginPage.delay(15000); // Wait for page load
+        extentTest.log(Status.INFO, "Entering valid username");
+        loginPage.enterUsername("Admin");
+
+        extentTest.log(Status.INFO, "Entering valid password");
+        loginPage.enterPassword("admin123");
+
+        extentTest.log(Status.INFO, "Clicking Login Button");
+        loginPage.clickLoginButton();
+        loginPage.delay(6000);
+
+        HomePage homePage = new HomePage();
+        String actualResult = homePage.getHeaderText();
+        extentTest.log(Status.PASS, "Login successful, Dashboard displayed");
+        Assert.assertEquals(actualResult, expectedResult, "Actual and expected results do not match");
+    }
 
 }

@@ -1,26 +1,40 @@
 package demo.orangehrm.org;
 
 import com.base.BasePage;
-import com.utilities.DropDownUtility;
-import com.utilities.Utility;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
+/**
+ * LogoutPage
+ * ----------
+ * This Page Object represents the Logout functionality in OrangeHRM.
+ * Responsibilities:
+ * - Click on the user dropdown menu
+ * - Click on the logout link to log out of the application
+ * Extends HomePage to reuse navigation and dashboard-related methods if needed.
+ */
 public class LogoutPage extends HomePage {
-        private By dropDownElement = By.xpath("//p[@class='oxd-userdropdown-name']");
-        private By logoutElement = By.xpath("//a[normalize-space()='Logout']");
 
+    // -------------------------------
+    // Locators
+    // -------------------------------
+    private final By dropDownElement = By.xpath("//p[@class='oxd-userdropdown-name']");
+    private final By logoutElement = By.xpath("//a[normalize-space()='Logout']");
 
-        // to Click on DropDown
-        public void clickOnDropDown(){
-            click(dropDownElement);
-        }
+    // -------------------------------
+    // Page Actions
+    // -------------------------------
 
-        // to click on Logout in a Dropdown
-        public void clickOnLogout(){
-            click(logoutElement);
-        }
+    /**
+     * Clicks on the user dropdown in the top bar to show logout option.
+     */
+    public void clickUserDropdown(){
+        click(dropDownElement);
+    }
 
-
+    /**
+     * Clicks on the "Logout" link from the user dropdown to log out of the application.
+     */
+    public void clickLogout(){
+        click(logoutElement);
+    }
 }

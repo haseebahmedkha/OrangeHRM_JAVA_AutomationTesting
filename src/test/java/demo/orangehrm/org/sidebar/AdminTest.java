@@ -1,41 +1,61 @@
 package demo.orangehrm.org.sidebar;
+
 import com.aventstack.extentreports.Status;
-import demo.orangehrm.org.HomePage;
 import demo.orangehrm.org.SideBar;
 import demo.orangehrm.org.base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.utilities.WaitUtility.explicitWaitUntilWait;
-
+/**
+ * AdminTest Class
+ * ------------------------
+ * - Tests the Admin Sidebar functionality in OrangeHRM
+ * - Verifies that:
+ *   1. Admin page title is displayed
+ *   2. User Management title is correct
+ */
 public class AdminTest extends BaseTest {
 
     @Test
     public void testAdminTitleAndUserManagementTitle() {
-        String expectedResult = "User Management";
-        extentTest = extentReports.createTest("Verify Admin and UserManagement Title");
-        loginPage.delay(10000);
-        loginPage.setUserName("Admin");
-        extentTest.log(Status.INFO,"Valid User Name Entered");
-        loginPage.setUserPassword("admin123");
-        extentTest.log(Status.INFO,"Valid User Password Entered");
+        // Expected text for verification
+        String expectedUserManagementTitle = "User Management";
+
+        // Start ExtentReports logging
+        extentTest = extentReports.createTest("Verify Admin and User Management Titles");
+
+        // Step 1: Login
+        loginPage.delay(10000); // Wait for page to load
+        loginPage.enterUsername("Admin");
+        extentTest.log(Status.INFO, "Entered valid username: Admin");
+        loginPage.enterPassword("admin123");
+        extentTest.log(Status.INFO, "Entered valid password");
         loginPage.clickLoginButton();
-        extentTest.log(Status.INFO,"Clicked Login Button");
+        extentTest.log(Status.INFO, "Clicked login button");
+
+        // Step 2: Navigate to Admin from Sidebar
         SideBar sideBar = new SideBar();
-//        sideBar.clickOnAdmin().isAdminTitleDisplayed();
-//        sideBar.clickOnAdmin().isUserManagementTitleDisplayed();
         loginPage.delay(10000);
         sideBar.clickOnAdmin();
         loginPage.delay(6000);
+
+        // Step 3: Create Admin page object
         Admin admin = new Admin();
-        loginPage.delay(10000);
-        boolean adminTitle = admin.isAdminTitleDisplayed();
-        String userManagementTitle = admin.isUserManagementTitleDisplayed();
-        Assert.assertTrue(adminTitle,"Admin Title Not Found" + adminTitle);
-        extentTest.log(Status.PASS,"Admin title is Displayed");
-        Assert.assertEquals(userManagementTitle,expectedResult,"Actual and Expected Do Not Matched");
-        extentTest.log(Status.PASS,"User Management Title is: " + userManagementTitle);
+        loginPage.delay(5000);
+
+        // Step 4: Verify Admin title
+        boolean isAdminTitleDisplayed = admin.isAdminTitleDisplayed();
+        extentTest.log(Status.INFO, "Admin title displayed: " + isAdminTitleDisplayed);
+        Assert.assertTrue(isAdminTitleDisplayed, "Admin Title is not displayed");
+
+        // Step 5: Verify User Management title
+        String actualUserManagementTitle = admin.getUserManagementTitleText();
+        if (actualUserManagementTitle.equals(expectedUserManagementTitle)) {
+            extentTest.log(Status.PASS, "User Management title is correct: " + actualUserManagementTitle);
+        } else {
+            extentTest.log(Status.FAIL, "User Management title mismatch: " + actualUserManagementTitle);
+            Assert.fail("Expected User Management title: " + expectedUserManagementTitle +
+                    ", but found: " + actualUserManagementTitle);
+        }
     }
 }
-
-
